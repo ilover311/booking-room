@@ -1,21 +1,47 @@
+import AppBar from 'material-ui/AppBar'
+import Drawer from 'material-ui/Drawer';
+import FlatButton from 'material-ui/FlatButton';
+import MenuItem from 'material-ui/MenuItem';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      drawerOpen: false,
+    };
+  }
+  
+  leftTapButton() {
+    let _this = this;
+    _this.setState({
+      drawerOpen: true
+    })
+  }
+
+
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
+      <MuiThemeProvider>
+        <AppBar
+          title="회의실 예약 SAP"
+          onLeftIconButtonTouchTap={this.leftTapButton.bind(this)}
+        />
+        <Drawer
+          docked={false}
+          width={200}
+          open={this.state.drawerOpen}
+          onRequestChange={(open) => this.setState({drawerOpen: open})}
+        >
+          <MenuItem onClick={() => this.setState({drawerOpen: false})}>Menu Item</MenuItem>
+        </Drawer>
+      </MuiThemeProvider>
     );
   }
 }
 
 export default App;
+

@@ -5,7 +5,6 @@ const logger = require('morgan');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 
-
 const app = express();
 
 app.set("port", process.env.PORT || 3001);
@@ -22,6 +21,7 @@ require('./routes/api')(app);
 app.use((req, res, next) => {
   if(req.accepts('html')) {
     //
+
   }
   else {
     next();

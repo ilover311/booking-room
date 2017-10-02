@@ -8,12 +8,16 @@
     "cookie-parser": "^1.4.3",
     "express": "4.13.3",
     "fs": "0.0.2",
+    "jsonwebtoken": "^8.0.1",
     "morgan": "^1.9.0",
-    "sql.js": "0.3.2"
+    "passport": "^0.4.0",
+    "sequelize": "^4.13.2",
+    "sql.js": "0.3.2",
+    "sqlite3": "^3.1.13"
   },
   "scripts": {
     "start": "concurrently \"npm run server\" \"npm run client\"",
-    "server": "node server.js",
+    "server": "nodemon server.js",
     "client": "node start-client.js",
     "dev": "echo \"This command has been deprecated. Use 'npm start'\" && exit 1",
     "lint": "eslint ."
@@ -24,6 +28,7 @@
     "eslint-config-airbnb": "14.1.0",
     "eslint-plugin-import": "2.2.0",
     "eslint-plugin-jsx-a11y": "4.0.0",
-    "eslint-plugin-react": "6.9.0"
+    "eslint-plugin-react": "6.9.0",
+    "nodemon": "^1.12.1"
   }
 }
