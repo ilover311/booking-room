@@ -3,6 +3,7 @@ import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import DatePicker from 'material-ui/DatePicker';
 import RaisedButton from 'material-ui/RaisedButton';
+import axios from 'axios';
 import './SearchRoom.css';
 
 class SearchRoom extends React.Component {
@@ -22,13 +23,27 @@ class SearchRoom extends React.Component {
     }
   }
 
-  compomentDidMount() {
-
+  componentDidMount() {
+    console.log('asdf');
+    this.initSearch()
   }
 
+  initSearch() {
+    let _this = this;
+    axios.get('/api', {})
+    .then(value => {
+      let opt = ['전체'].concat(value.data.rooms.map((val, idx, ary) => (val.roomName)))
+      _this.setState({
+        rooms: opt
+      })
+      console.log(opt);
+    })
+    .catch(err => {
+
+    })
+  }
   findRooms() {
-    // getting search result by using axios
-    console.log('click findRoom');
+    
   }
 
   render() {

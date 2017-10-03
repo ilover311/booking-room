@@ -18,15 +18,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 require('./routes/api')(app);
 
-app.use((req, res, next) => {
-  if(req.accepts('html')) {
-    //
-
-  }
-  else {
-    next();
-  }
-})
+// app.use((req, res, next) => {
+//   if(req.accepts('html')) {
+//     //
+//     next();
+//   }
+//   else {
+//     next();
+//   }
+// })
 
 // Express only serves static assets in production
 if (process.env.NODE_ENV === "production") {
