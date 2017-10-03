@@ -2,7 +2,7 @@
 
 This project is for booking a conference room and is forked from [https://github.com/fullstackreact/food-lookup-demo]
 
-You can find other thrid parties in package.json file.
+You can find other third parties modules and library in package.json file.
 
 Requires
   Nodejs >= 7.10

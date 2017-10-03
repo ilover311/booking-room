@@ -11,6 +11,7 @@
     "jsonwebtoken": "^8.0.1",
     "morgan": "^1.9.0",
     "passport": "^0.4.0",
+    "react-bootstrap-table": "^4.0.6",
     "sequelize": "^4.13.2",
     "sql.js": "0.3.2",
     "sqlite3": "^3.1.13"
