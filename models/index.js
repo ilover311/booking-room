@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize');
+const moment = require('moment');
 
 const db = new Sequelize('database', '', '', {
   host: 'localhost',
@@ -21,63 +22,65 @@ const Room = db.define('room', {
     allowNull: false,
   },
   openTime: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.TIME,
     allowNull: false,
   },
   closeTime: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.TIME,
     allowNull: false,
   }
 });
 
+const Booking = db.define('booking', {
+  bookingID: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    primaryKey: true
+  },
+  roomNo: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  owner: {
+    type: Sequelize.STRING,
+    allowNull: true,
+  },
+  date: {
+    type: Sequelize.DATE,
+    allowNull: false
+  },
+  startTime: {
+    type: Sequelize.TIME,
+    allowNull: false,
+  },
+  endTime: {
+    type: Sequelize.TIME,
+    allowNull: false
+  },
+  attendee: {
+    type: Sequelize.TEXT,
+    allowNull: true
+  }
+})
 
 db.sync()
 .then(() => {
   // default values
-  Room.findOrCreate({
-    where: {
-      roomNo: 1
-    },
-    defaults: {
-      roomName: '회의실1',
-      capacity: 20,
-      openTime: 9,
-      closeTime: 20
-    }
-  })
-  Room.findOrCreate({
-    where: {
-      roomNo: 2
-    },
-    defaults: {
-      roomName: '회의실2',
-      capacity: 20,
-      openTime: 13,
-      closeTime: 20
-    }
-  })
-  Room.findOrCreate({
-    where: {
-      roomNo: 3
-    },
-    defaults: {
-      roomName: '회의실3',
-      capacity: 20,
-      openTime: 9,
-      closeTime: 17
-    }
-  })
-  Room.findOrCreate({
-    where: {
-      roomNo: 4
-    },
-    defaults: {
-      roomName: '회의실4',
-      capacity: 20,
-      openTime: 10,
-      closeTime: 15
-    }
-  })
+  return Room.count() 
+})
+.then((val) => {
+  if (val == 0) {
+    Room.bulkCreate(
+      [1,2,3,4,5].map((val, idx, ary) => {
+        return {
+          roomNo: val,
+          roomName: '회의실' + val,
+          capacity: 20,
+          openTime: '09:00:00',
+          closeTime: '20:00:00',
+        }
+    }))
+  }
 })
 .catch(e => {
   console.error(e);
@@ -85,5 +88,5 @@ db.sync()
 
 module.exports = {
   room: Room,
-
+  booking: Booking
 }

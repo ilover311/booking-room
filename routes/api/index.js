@@ -6,7 +6,7 @@ module.exports = function(app) {
   app.use('/api', router)
 };
 
-router.get('/', (req, res) => {
+router.get('/roomlist', (req, res) => {
   db.room.findAll({})
   .then(values => {
     let rooms = values.map((val, inx, ary) => {
@@ -26,8 +26,27 @@ router.get('/', (req, res) => {
   })
 })
 
-router.get('/searchroom', (req, res) => {
-  res.send({
-    s: '1'
-  });
+router.get('/bookings', (req, res) => {
+  const q = req.query;
+  db.booking.findAll({where: {
+    roomNo: q.roomNo,
+    date: q.date
+  }})
+  .then(values => {
+    let bookings = values.map((val, idx, ary) => {
+      return vale.dataValues;
+    })
+    console.log(bookings)
+    res.send({
+      result: 0,
+      bookings: bookings
+    })
+  })
+  .catch(err => {
+    console.error(err)
+    res.send({
+      result: 1,
+      error: err
+    })
+  })
 })

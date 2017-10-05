@@ -13,7 +13,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import React, { Component } from 'react';
 import './App.css';
 
-import SearchRoom from './SearchRoom';
+import ReserveRoom from './reserveRoom';
 
 class App extends Component {
   constructor(props) {
@@ -29,26 +29,36 @@ class App extends Component {
       drawerOpen: true
     })
   }
+  
+
+	handleMenu = (pathname) => { window.location.pathname = pathname; }
 
   render() {
+    let title = '회의실 예약 SPA'
+    if(matchPath(window.location.pathname, {path: '/list'})) { title += ' - 회의실 리스트 보기'}
+    else if(matchPath(window.location.pathname, {path: '/reserve'})) { title += ' - 회의실 예약 하기'}
+
     return (
       <BrowserRouter>
         <MuiThemeProvider>
           <div>
             <AppBar
-              title="회의실 예약 SAP"
+              title={title}
               onLeftIconButtonTouchTap={this.leftTapButton.bind(this)}
-            />
-            <Drawer
-              docked={false}
-              width={200}
-              open={this.state.drawerOpen}
-              onRequestChange={(open) => this.setState({drawerOpen: open})}
             >
-              <MenuItem onClick={() => this.setState({drawerOpen: false})}>Menu Item</MenuItem>
-            </Drawer>
+              <Drawer
+                docked={false}
+                width={200}
+                open={this.state.drawerOpen}
+                onRequestChange={(open) => this.setState({drawerOpen: open})}
+              >
+                <MenuItem onClick={() => this.handleMenu('/list')}>회의실 리스트</MenuItem>
+                <MenuItem onClick={() => this.handleMenu('/reserve')}>회의실 예약</MenuItem>
+              </Drawer>
+            </AppBar>
             <Switch>
-              <Route path="/" component={SearchRoom}/>
+							<Route exact path="/reserve" component={ReserveRoom} />
+              <Route exact path="/" render={() => <div>SELECT MENU!<br/>CLICK LEFT-TOP HAMBUGER MENU!</div>}/>
             </Switch>
           </div>
         </MuiThemeProvider>
@@ -58,4 +68,3 @@ class App extends Component {
 }
 
 export default App;
-
