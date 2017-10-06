@@ -1,0 +1,16 @@
+.reserve {
+    display: inline-flex !important;
+}
+
+.reserve-info {
+    width: 25%;
+    display: inline-flex;
+}
+
+.table {
+    width: 70%
+}
+
+.reserve-sheet {
+    display: inline-flex !important;
+}

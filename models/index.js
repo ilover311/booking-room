@@ -35,7 +35,8 @@ const Booking = db.define('booking', {
   bookingID: {
     type: Sequelize.INTEGER,
     allowNull: false,
-    primaryKey: true
+    primaryKey: true,
+    autoIncrement: true,
   },
   roomNo: {
     type: Sequelize.INTEGER,
@@ -46,7 +47,7 @@ const Booking = db.define('booking', {
     allowNull: true,
   },
   date: {
-    type: Sequelize.DATE,
+    type: Sequelize.DATEONLY,
     allowNull: false
   },
   startTime: {

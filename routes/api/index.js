@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const moment = require('moment');
 const db = require('../../models/index');
 
 module.exports = function(app) {
@@ -14,39 +15,100 @@ router.get('/roomlist', (req, res) => {
     })
     res.send({
       result: 0,
-      rooms: rooms
+      rooms: rooms,
+      msg: "",
     });  
   })
   .catch(err => {
     console.error(err)
     res.send({
-      result: 1,
-      error: err  
+      result: -1,
+      msg: err  
     })
   })
 })
 
 router.get('/bookings', (req, res) => {
   const q = req.query;
+  console.log(q.date)
   db.booking.findAll({where: {
     roomNo: q.roomNo,
     date: q.date
   }})
   .then(values => {
     let bookings = values.map((val, idx, ary) => {
-      return vale.dataValues;
+      return val.dataValues;
     })
-    console.log(bookings)
     res.send({
       result: 0,
-      bookings: bookings
+      bookings: bookings,
+      msg: ""
     })
   })
   .catch(err => {
     console.error(err)
     res.send({
-      result: 1,
-      error: err
+      result: -1,
+      msg: err,
     })
   })
+})
+
+router.post('/reserve', (req, res) => {
+  let b = req.body;
+  (async function() {
+    try {
+      let overbooking = await db.booking.findAll({ where: {
+        roomNo: b.roomNo,
+        date: b.date,
+        startTime : { $lt: b.endTime },
+        endTime: { $gt: b.startTime }
+      }});
+
+      if (overbooking.length > 0) {
+        res.send({
+          result: 1,
+          msg: "이미 원하시는 시간에 예약이 되어있습니다."
+        })
+        return ;
+      }
+
+      let room = await db.room.findOne({ where: { roomNo: b.roomNo }})
+
+      if(b.startTime < room.openTime || b.endTime > room.closeTime) {
+        res.send({
+          result: 2,
+          msg: "예약 할 수 없는 시간입니다."
+        })
+        return;
+      }
+
+      if(room.dataValues.capacity < b.attendee.split(',').length) {
+        res.send({
+          result: 3,
+          msg: "수용인원보다 많은 인원입니다."
+        })
+        return;
+      }
+
+      let booking = await db.booking.create({
+          roomNo: b.roomNo,
+          date: b.date,
+          startTime: b.startTime,
+          endTime: b.endTime,
+          attendee: b.attendee,
+      });
+
+      res.send({
+        result: 0,
+        data: booking.dateValues,
+        msg: "예약에 성공했습니다."
+      })
+    } catch(e) {
+      res.send({
+        result: -1,
+        msg: e
+      })
+    }
+  })(); 
 })
