@@ -7,6 +7,54 @@ const db = new Sequelize('database', '', '', {
   storage: 'database.sqlite'
 });
 
+const User = db.define('user', {
+  id: {
+    type: Sequelize.INTEGER,
+    autoIncrement: true,
+    primaryKey: true
+  },
+  username: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    unique: true
+  },
+  password: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  access: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  state: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  lastLoginIp: {
+    type: Sequelize.STRING,
+    allowNull: true,
+  },
+  lastLoginAt: {
+    type: Sequelize.DATE,
+    allowNull: true
+  }
+})
+
+const Log = db.define('log', {
+  username: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  apiPath: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
+  apiDate: {
+    type: Sequelize.STRING,
+    allowNull: false
+  }
+})
+
 const Room = db.define('room', {
   roomNo: {
     type: Sequelize.INTEGER,
@@ -89,5 +137,7 @@ db.sync()
 
 module.exports = {
   room: Room,
-  booking: Booking
+  booking: Booking,
+  user: User,
+  log: Log
 }

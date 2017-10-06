@@ -16,6 +16,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+require('./routes/auth')(app);
 require('./routes/api')(app);
 
 // app.use((req, res, next) => {

@@ -75,7 +75,7 @@ router.post('/reserve', (req, res) => {
 
       let room = await db.room.findOne({ where: { roomNo: b.roomNo }})
 
-      if(b.startTime < room.openTime || b.endTime > room.closeTime) {
+      if(b.startTime < room.openTime || b.endTime > room.closeTime || b.endTime <= b.startTime) {
         res.send({
           result: 2,
           msg: "예약 할 수 없는 시간입니다."
@@ -97,6 +97,7 @@ router.post('/reserve', (req, res) => {
           startTime: b.startTime,
           endTime: b.endTime,
           attendee: b.attendee,
+          owner: b.owner
       });
 
       res.send({
