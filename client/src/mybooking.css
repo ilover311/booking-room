@@ -2,3 +2,14 @@
     display: inline-block;
     width: 50%;
 }
+
+.right {
+    text-align: right;
+    margin-bottom: 10px;
+}
+
+.edit-page {
+    width: 600px;
+    margin: 0px auto;
+    text-align: center;
+}

@@ -146,6 +146,74 @@ router.get('/mybookings', (req, res) => {
 
 })
 
-router.delete('/removebooking', (req, res) => {
-  
+router.delete('/cancelbooking', (req, res) => {
+  db.booking.destroy({
+    where: {
+      bookingID: req.query.bookingID,
+      owner: req.user.username,
+      $or: {
+        date: { $gt: moment().format('YYYY-MM-DD') },
+        $and: {
+          date: moment().format('YYYY-MM-DD'),
+          startTime: { $gt: moment().format('HH:mm:00') }
+        }
+      }
+    }
+  })
+  .then(val => {
+    let msg;
+    if (val == 1) {
+      msg = "성공적으로 삭제되었습니다."
+    } else {
+      msg = "삭제 할 수 없는 예약입니다. 시간을 확인해주세요."
+    }
+    res.send({
+      result: 0,
+      msg: msg
+    })
+  })
+  .catch(err => {
+    res.send({
+      result: -1,
+      msg: err
+    })
+  })
+})
+
+router.put('/changebooking', (req, res) => {
+  db.booking.update({
+      startTime: req.body.startTime,
+      endTime: req.body.endTime,
+      attendee: req.body.attendee
+    }, {
+    where: {
+      bookingID: req.body.bookingID,
+      owner: req.user.username,
+      $or: {
+        date: { $gt: moment().format('YYYY-MM-DD') },
+        $and: {
+          date: moment().format('YYYY-MM-DD'),
+          startTime: { $gt: moment().format('HH:mm:00') }
+        }
+      }
+    }
+  })
+  .then(val => {
+    let msg;
+    if (val === 1) {
+      msg = "성공적으로 수정되었습니다."
+    } else {
+      msg = "수정할 수 없는 예약입니다. 시간을 확인해주세요."
+    }
+    res.send({
+      result: 0,
+      msg: msg
+    })
+  })  
+  .catch(err => {
+    res.send({
+      result: -1,
+      msg: msg
+    })
+  })
 })

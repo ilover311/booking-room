@@ -151,7 +151,7 @@ class ReserveRoom extends React.Component {
                       <span>예약 되어있는 시간들 (겹치는 시간에 예약이 불가능합니다)</span>
                       {this.state.bookings.map((key) => {
                         return (
-                          <div>
+                          <div key={key}>
                             {key.startTime} ~ {key.endTime}
                           </div>
                         )
@@ -210,6 +210,7 @@ class ReserveRoom extends React.Component {
                             return (
                               <ListItem
                                 primaryText={val}
+                                key={val}
                                 rightIcon={<DeteleForever/>}
                                 onClick={(ev) => {
                                   let a = this.state.attendee;

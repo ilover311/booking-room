@@ -56,7 +56,7 @@ let authorization = (req, res, next) => {
       req.user = user;
       if(req.method !== "GET" && (req.user.access & 1) !== 1)
         return res.status(401).end()
-      if(req.method === "POST"){
+      if(["POST", "DELETE", "PUT"].includes(req.method) === true){
         db.log.create({
           username: user.username,
           apiPath: req.originalUrl,
