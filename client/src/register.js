@@ -2,9 +2,10 @@ import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import Snackbar from 'material-ui/Snackbar';
+import FlatButton from 'material-ui/FlatButton';
 import axios from 'axios';
 import validator from 'validator';
-
+import Dialog from 'material-ui/Dialog'
 import './register.css'
 
 class Register extends React.Component{
@@ -16,6 +17,7 @@ class Register extends React.Component{
       password2: '',
       sb_open: false,
       sb_msg: '',
+      dialog_open: false
     }
   }
 
@@ -44,7 +46,8 @@ class Register extends React.Component{
     axios.post('/auth/register', payload)
     .then(res => {
       if (res.status === 200) {
-        _this.setState({sb_open: true})
+        _this.setState({dialog_open: true})
+        window
       } else {
         _this.setState({sb_open: true, sb_msg: res.data.message+'('+res.status+')'})
       }
@@ -86,6 +89,19 @@ class Register extends React.Component{
           message={this.state.sb_msg}
           autoHideDuration={4000}
           onRequestClose={() => {this.setState({sb_open: false})}}/>
+          <Dialog
+            title="회원가입 완료!"
+            actions={
+              <FlatButton
+                label="확인"
+                primary={true}
+                onClick={() => {window.location.pathname = "/login"}}
+              />
+            }
+            open={this.state.dialog_open}
+          >
+          회원가입이 성공적으로 되었습니다. 확인을 누르시면 로그인 화면으로 넘어갑니다.
+          </Dialog>
       </div>
     )
   }

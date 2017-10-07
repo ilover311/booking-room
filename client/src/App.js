@@ -39,6 +39,8 @@ class Logedin extends React.Component {
     this.setState({open: true, anchorEl: ev.currentTarget})
   }
   logOut = (ev) => {
+    cookie.remove('token')
+    cookie.remove('access')
     cookie.remove('username')
     window.location.pathname = '/login'
   }
@@ -67,7 +69,7 @@ class Main extends Component {
     return (
       <div className="starter-template App">
           <h1>Booking Room Single Web Application</h1>
-          <p class="lead">오른쪽 위 상단 회원가입 및 로그인 후에 왼쪽 상단 햄버거 메뉴를 통해서 예약 및 수정이 가능합니다.</p>
+          <p className="lead">오른쪽 위 상단 회원가입 및 로그인 후에 왼쪽 상단 햄버거 메뉴를 통해서 예약 및 수정이 가능합니다.</p>
       </div>
     );
   }
