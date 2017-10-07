@@ -4,7 +4,6 @@ import TextField from 'material-ui/TextField';
 import Snackbar from 'material-ui/Snackbar';
 import axios from 'axios';
 import validator from 'validator';
-import Auth from './Auth'
 
 import './login.css'
 
@@ -39,7 +38,6 @@ class Login extends React.Component {
     axios.post('/auth/login', payload)
     .then(res => {
       if(res.status === 200) {
-        Auth.authenticateUser(res.data.token, res.data.user.username, res.data.user.access);
         window.location.pathname = this.state.from ? this.state.from : '/';
       } else {
         _this.setState({sb_open: true, sb_msg: res.data.message+'('+res.status+')'})

@@ -18,7 +18,7 @@ import DeteleForever from 'material-ui/svg-icons/action/delete-forever';
 
 
 import './reserveRoom.css';
-import Auth from './Auth';
+import cookie from 'react-cookies'
 
 class ReserveRoom extends React.Component {
   constructor(props) {
@@ -40,7 +40,7 @@ class ReserveRoom extends React.Component {
 
   initRoomList() {
     let _this = this;
-    axios.get('/api/roomlist', Auth.getHeader())
+    axios.get('/api/roomlist')
     .then(value => {
       _this.setState({
         search_result: value.data.rooms,
@@ -62,7 +62,7 @@ class ReserveRoom extends React.Component {
 
   getBooking(date) {
     let _date = moment(date).format('YYYY-MM-DD');
-    axios.get(`/api/bookings?roomNo=${this.state.roomNo}&date=${_date}`, Auth.getHeader())
+    axios.get(`/api/bookings?roomNo=${this.state.roomNo}&date=${_date}`)
     .then(value => {
       this.setState({ bookings: value.data.bookings })
     })
@@ -78,8 +78,7 @@ class ReserveRoom extends React.Component {
       startTime: moment(this.state.startTime).format('HH:mm:00'),
       endTime: moment(this.state.endTime).format('HH:mm:00'),
       attendee: this.state.attendee.join(),
-      owner: Auth.getUsername()
-    }, Auth.getHeader())
+    })
     .then(val => {
       this.setState({
         sb_open: true,

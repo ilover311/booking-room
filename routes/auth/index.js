@@ -44,15 +44,21 @@ passport.use(new LocalStrategy({
 }))
 
 let authorization = (req, res, next) => {
-  if (!req.headers.authorization) {
-    return res.status(401).end();
+  //if (!req.headers.authorization) {
+  //  return res.status(401).end();
+  //}
+  //const token = req.headers.authorization.split(' ')[1];
+
+  const token = req.cookies.token;
+  if(token === null) {
+    return res.status(401).end()
   }
-  const token = req.headers.authorization.split(' ')[1];
   jwt.verify(token, jwtSecret, (err, decoded) => {
     if (err) { return res.status(401).end() }
     const userId = decoded.sub;
     db.user.findOne({ where: {id: userId, state: 1} })
     .then(user => {
+      res.cookie(user.username)
       req.user = user;
       if(req.method !== "GET" && (req.user.access & 1) !== 1)
         return res.status(401).end()
@@ -132,11 +138,12 @@ router.post('/login', (req, res) => {
         message: err.message
       })
     }
+    res.cookie('token', token, {httpOnly: true})
+    res.cookie('username', userData.username)
+    res.cookie('access', userData.access)
     return res.json({
       success: true,
-      message: 'You have successfully logged in!',
-      token,
-      user: userData
+      message: 'You have successfully logged in!'
     })
   })(req, res);
 })

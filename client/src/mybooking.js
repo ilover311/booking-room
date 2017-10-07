@@ -1,6 +1,5 @@
 import React from 'react';
 import axios from 'axios';
-import Auth from './Auth';
 import Paper from 'material-ui/Paper';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
@@ -33,7 +32,7 @@ class Mybookings extends React.Component{
   }
 
   initMyBooking() {
-    axios.get('/api/mybookings', Auth.getHeader())
+    axios.get('/api/mybookings')
     .then(val => {
       this.setState({mybookings: val.data.bookings})
     })  
@@ -56,7 +55,7 @@ class Mybookings extends React.Component{
       return;
     }
     let roomNo = row.roomNo
-    axios.get(`/api/room?roomNo=${roomNo}`, Auth.getHeader())
+    axios.get(`/api/room?roomNo=${roomNo}`)
     .then(val => {
       let r = val.data.room
       this.setState({
@@ -83,7 +82,7 @@ class Mybookings extends React.Component{
       startTime: moment(this.state.startTime).format('HH:mm:00'),
       endTime: moment(this.state.endTime).format('HH:mm:00'),
       attendee: this.state.attendee.join(),
-    }, Auth.getHeader())
+    })
     .then(res => {
       this.setState({
         bookingID: undefined,
@@ -98,7 +97,7 @@ class Mybookings extends React.Component{
   }
 
   cancelBooking() {
-    axios.delete(`/api/cancelbooking?bookingID=${this.state.bookingID}`, Auth.getHeader())
+    axios.delete(`/api/cancelbooking?bookingID=${this.state.bookingID}`)
     .then(res => {
       this.setState({
         bookingID: undefined,

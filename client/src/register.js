@@ -5,7 +5,6 @@ import Snackbar from 'material-ui/Snackbar';
 import axios from 'axios';
 import validator from 'validator';
 
-import Auth from './Auth'
 import './register.css'
 
 class Register extends React.Component{

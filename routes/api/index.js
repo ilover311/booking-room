@@ -115,7 +115,7 @@ router.post('/reserve', (req, res) => {
           startTime: b.startTime,
           endTime: b.endTime,
           attendee: b.attendee,
-          owner: b.owner
+          owner: req.user.username
       });
 
       res.send({

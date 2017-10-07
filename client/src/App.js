@@ -15,11 +15,11 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import './App.css';
-import Auth from './Auth'
 import Login from './login'
 import Register from './register'
 import Mybooking from './mybooking'
 import ReserveRoom from './reserveRoom';
+import cookie from 'react-cookies'
 
 class NotLogin extends React.Component {
   render() {
@@ -39,13 +39,13 @@ class Logedin extends React.Component {
     this.setState({open: true, anchorEl: ev.currentTarget})
   }
   logOut = (ev) => {
-    Auth.deauthenticateUser();
+    cookie.remove('username')
     window.location.pathname = '/login'
   }
   render() {
     return (
       <div>
-        <FlatButton {...this.props} label={Auth.getUsername()} onClick={this.menuOpen}/>
+        <FlatButton {...this.props} label={cookie.load('username')} onClick={this.menuOpen}/>
         <Popover
           open={this.state.open}
           anchorEl={this.state.anchorEl}
@@ -104,7 +104,7 @@ class App extends Component {
             <AppBar
               title={title}
               onLeftIconButtonTouchTap={this.leftTapButton.bind(this)}
-              iconElementRight={Auth.isUserAuthenticated() ? <Logedin/> : <NotLogin/> }
+              iconElementRight={cookie.load('token') ? <Logedin/> : <NotLogin/> }
             >
               <Drawer
                 docked={false}
@@ -137,7 +137,7 @@ export default App;
 
 const MatchWhenAuthorized = ({component: Component, ...rest}) => (
   <Route {...rest} render={renderProps => (
-    Auth.isUserAuthenticated() ? (
+    cookie.load('token') ? (
       <Component {...renderProps} />
     ) : (
       <Redirect to={{
