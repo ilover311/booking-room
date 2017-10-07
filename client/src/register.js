@@ -6,6 +6,7 @@ import axios from 'axios';
 import validator from 'validator';
 
 import Auth from './Auth'
+import './register.css'
 
 class Register extends React.Component{
   constructor(props){
@@ -57,6 +58,8 @@ class Register extends React.Component{
   render() {
     return (
       <div className='register'>
+        <br/>
+        <h3>회원가입</h3>
         <TextField
           hintText='Enter your Email'
           type="email"

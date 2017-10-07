@@ -18,6 +18,7 @@ import './App.css';
 import Auth from './Auth'
 import Login from './login'
 import Register from './register'
+import Mybooking from './mybooking'
 import ReserveRoom from './reserveRoom';
 
 class NotLogin extends React.Component {
@@ -61,6 +62,17 @@ class Logedin extends React.Component {
   }
 }
 
+class Main extends Component { 
+  render() {
+    return (
+      <div className="starter-template App">
+          <h1>Booking Room Single Web Application</h1>
+          <p class="lead">오른쪽 위 상단 회원가입 및 로그인 후에 왼쪽 상단 햄버거 메뉴를 통해서 예약 및 수정이 가능합니다.</p>
+      </div>
+    );
+  }
+};
+
 class App extends Component {
   constructor(props) {
     super(props)
@@ -101,15 +113,19 @@ class App extends Component {
                 onRequestChange={(open) => this.setState({drawerOpen: open})}
               >
                 <MenuItem onClick={() => this.handleMenu('/reserve')}>회의실 예약</MenuItem>
+                <MenuItem onClick={() => this.handleMenu('/mybooking')}>내 예약 보기</MenuItem>
               </Drawer>
             </AppBar>
-            <Switch>
-              <Route exact path="/login" component={Login}/>
-              <Route exact path="/register" component={Register}/>
-							<MatchWhenAuthorized exact path="/reserve" component={ReserveRoom} />
-              <Route exact path="/" render={() => <div>SELECT MENU!<br/>CLICK LEFT-TOP HAMBUGER MENU!</div>}/>
-              <Redirect to="/login"/>
-            </Switch>
+            <div className="container">
+              <Switch>
+                <Route exact path="/login" component={Login}/>
+                <Route exact path="/register" component={Register}/>
+                <MatchWhenAuthorized exact path="/reserve" component={ReserveRoom} />
+                <MatchWhenAuthorized exact path="/mybooking" component={Mybooking} />
+                <Route exact path="/" component={Main}/>
+                <Redirect to="/login"/>
+              </Switch>
+            </div>
           </div>
         </MuiThemeProvider>
       </BrowserRouter>

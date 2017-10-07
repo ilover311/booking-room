@@ -1,16 +1,23 @@
 .reserve {
-    display: inline-flex !important;
+  display: inline-flex !important;
 }
 
 .reserve-info {
-    width: 25%;
-    display: inline-flex;
+  width: 600px;
+  margin: 0px auto;
+  text-align: center;
 }
 
 .table {
-    width: 70%
+  width: 70%
 }
 
 .reserve-sheet {
-    display: inline-flex !important;
+  text-align: center;
+  display: block;
+}
+
+.time {
+  width: 50%;
+  display: inline-block;
 }

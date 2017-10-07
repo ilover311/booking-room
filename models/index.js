@@ -49,7 +49,7 @@ const Log = db.define('log', {
     type: Sequelize.STRING,
     allowNull: false
   },
-  apiDate: {
+  apiData: {
     type: Sequelize.STRING,
     allowNull: false
   }

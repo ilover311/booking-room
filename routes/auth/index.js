@@ -19,7 +19,6 @@ passport.use(new LocalStrategy({
     }
   })
   .then(user => {
-    console.log(user)
     if(!user || !passwordHash.verify(password, user.password)) {
       const error = new Error('Incorrect email or password')
       error.name = 'IncorrectCredentialsError'
@@ -54,7 +53,7 @@ let authorization = (req, res, next) => {
     const userId = decoded.sub;
     db.user.findOne({ where: {id: userId, state: 1} })
     .then(user => {
-      req.uesr = user;
+      req.user = user;
       if(req.method !== "GET" && (req.user.access & 1) !== 1)
         return res.status(401).end()
       if(req.method === "POST"){
@@ -109,8 +108,8 @@ router.post('/register', (req, res) => {
     },
     defaults : {
       password: hashed,
-      access: 0,
-      state: 2,
+      access: 1,
+      state: 1,
     }
   })
   .spread((user, created) => {
@@ -126,7 +125,6 @@ router.post('/register', (req, res) => {
 })
 
 router.post('/login', (req, res) => {
-  console.log(req.body)
   return passport.authenticate('local', (err, token, userData) => {
     if (err) {
       return res.status(400).json({
@@ -134,7 +132,6 @@ router.post('/login', (req, res) => {
         message: err.message
       })
     }
-    console.log(userData)
     return res.json({
       success: true,
       message: 'You have successfully logged in!',

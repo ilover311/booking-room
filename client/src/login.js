@@ -6,6 +6,8 @@ import axios from 'axios';
 import validator from 'validator';
 import Auth from './Auth'
 
+import './login.css'
+
 class Login extends React.Component {
   constructor(props) {
     super(props);
@@ -51,6 +53,8 @@ class Login extends React.Component {
   render() {
     return (
       <div className='login'>
+        <br/>
+        <h3>로그인</h3>
         <TextField
           hintText="Enter your Email"
           floatingLabelText="Email"
@@ -65,6 +69,7 @@ class Login extends React.Component {
         />
         <br/>
         <RaisedButton label="Register" onClick={(ev) => {window.location.pathname = '/register'}}/>
+        <span>  </span>
         <RaisedButton label="Login" primary={true} onClick={(ev) => {this.tryLogin(ev)}}/>
       </div>
     );

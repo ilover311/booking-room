@@ -7,6 +7,24 @@ module.exports = function(app) {
   app.use('/api', router)
 };
 
+router.get('/room', (req, res) => {
+  db.room.findOne({
+    where: { roomNo: req.query.roomNo }
+  })
+  .then(val => {
+    res.send({
+      result: 0,
+      room: val
+    })
+  })
+  .catch(e => {
+    res.send({
+      result: -1,
+      msg: e
+    })
+  })
+})
+
 router.get('/roomlist', (req, res) => {
   db.room.findAll({})
   .then(values => {
@@ -112,4 +130,22 @@ router.post('/reserve', (req, res) => {
       })
     }
   })(); 
+})
+
+router.get('/mybookings', (req, res) => {
+  db.booking.findAll({ where: { owner: req.user.username } })
+  .then(result => {
+    res.send({
+      result: 0,
+      bookings: result
+    })
+  })
+  .catch(e => {
+
+  })
+
+})
+
+router.delete('/removebooking', (req, res) => {
+  
 })

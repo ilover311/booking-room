@@ -1,4 +1,5 @@
 import React from 'react';
+import Paper from 'material-ui/Paper';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import DatePicker from 'material-ui/DatePicker';
@@ -8,10 +9,15 @@ import TextField from 'material-ui/TextField';
 import { List, ListItem} from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
 import Snackbar from 'material-ui/Snackbar';
+import Divider from 'material-ui/Divider';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import axios from 'axios';
 import moment from 'moment';
 
+import DeteleForever from 'material-ui/svg-icons/action/delete-forever';
+
+
+import './reserveRoom.css';
 import Auth from './Auth';
 
 class ReserveRoom extends React.Component {
@@ -71,7 +77,8 @@ class ReserveRoom extends React.Component {
       date: moment(this.state.date).format('YYYY-MM-DD'),
       startTime: moment(this.state.startTime).format('HH:mm:00'),
       endTime: moment(this.state.endTime).format('HH:mm:00'),
-      attendee: this.state.attendee.join()
+      attendee: this.state.attendee.join(),
+      owner: Auth.getUsername()
     }, Auth.getHeader())
     .then(val => {
       this.setState({
@@ -83,7 +90,7 @@ class ReserveRoom extends React.Component {
       console.error(err)
       this.setState({
         sb_open: true,
-        sb_msg: err
+        sb_msg: '문제가 발생했습니다.'
       })
     })
   }
@@ -139,7 +146,7 @@ class ReserveRoom extends React.Component {
                 />
                 <br/>
                 <div>
-                  {this.state.bookings !== [] ? (
+                  {this.state.bookings.length !== 0 ? (
                     <div>
                       <span>예약 되어있는 시간들 (겹치는 시간에 예약이 불가능합니다)</span>
                       {this.state.bookings.map((key) => {
@@ -154,22 +161,28 @@ class ReserveRoom extends React.Component {
                     ) : (<div>예약된 일정이 없습니다.</div>)}
                 </div>
               </div>
+              <br/>
+              <Divider/>
+              <br/>
               { this.state.date ? (
               <div className="reserve-info">
                   <div>
-                  <p>회의 시작 시간</p>
-                  <TimePicker
-                    hintText="시작 시간"
-                    format="24hr"
-                    onChange={(ev, time) => {this.setState({startTime: time})}}
-                  />
-                  <br/>
-                  <p>회의 종료 시간</p>
-                  <TimePicker
-                    hintText="종료 시간"
-                    format="24hr"
-                    onChange={(ev, time) => {this.setState({endTime: time})}}
-                  />
+                    <div className="time">
+                      <p>회의 시작 시간</p>
+                      <TimePicker
+                        hintText="시작 시간"
+                        format="24hr"
+                        onChange={(ev, time) => {this.setState({startTime: time})}}
+                      />
+                    </div>
+                    <div className="time">
+                      <p>회의 종료 시간</p>
+                      <TimePicker
+                        hintText="종료 시간"
+                        format="24hr"
+                        onChange={(ev, time) => {this.setState({endTime: time})}}
+                      />
+                    </div>
                   </div>
                   <div>
                     <TextField
@@ -177,6 +190,7 @@ class ReserveRoom extends React.Component {
                       floatingLabelText="참석자 이름"
                       value={this.state.attendee_text}
                       onChange={(ev, val) => {this.setState({attendee_text: val})}}/>
+                      <span>  </span>
                     <RaisedButton
                       label="인원 추가"
                       onClick={(ev) => {
@@ -187,19 +201,29 @@ class ReserveRoom extends React.Component {
                           attendee_text: "",
                         })
                       }}/>
-                    <List>
-                      <Subheader>참석자 리스트</Subheader>
-                      {
-                        this.state.attendee.map((val, idx, ary) => {
-                          return (
-                            <ListItem
-                              primaryText={val}
-                            />
-                          )
-                        })
-                      }
-                    </List>
+                    <br/>
+                    <Paper>
+                      <List>
+                        <Subheader>참석자 리스트 (아래 클릭시 리스트에서 삭제 됩니다.)</Subheader>
+                        {
+                          this.state.attendee.map((val, idx, ary) => {
+                            return (
+                              <ListItem
+                                primaryText={val}
+                                rightIcon={<DeteleForever/>}
+                                onClick={(ev) => {
+                                  let a = this.state.attendee;
+                                  a.splice(idx, 1);
+                                  this.setState({ attendee: a });
+                                }}
+                              />
+                            )
+                          })
+                        }
+                      </List>
+                    </Paper>
                   </div>
+                  <br/>
                   <RaisedButton
                     label="예약하기"
                     onClick={this.reserverRoom.bind(this)}/>
