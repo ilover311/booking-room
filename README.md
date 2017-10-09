@@ -31,6 +31,5 @@ This project is for booking a conference room and is forked from [https://github
 #### Production Env
 1. execute 'npm install' in server path(./) and client path(./client/)
 2. execute 'npm run build' in client path
-3. execute 'set NODE_ENV=production' in server path(./)
-4. execute 'node server.js'
+3. execute 'npm run prod' in server path(./)
 
