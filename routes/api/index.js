@@ -93,7 +93,8 @@ router.post('/reserve', (req, res) => {
 
       let room = await db.room.findOne({ where: { roomNo: b.roomNo }})
 
-      if(b.startTime < room.openTime || b.endTime > room.closeTime || b.endTime <= b.startTime) {
+      if(b.startTime < room.openTime || b.endTime > room.closeTime || b.endTime <= b.startTime
+      || moment() > moment(new Date([b.date, b.startTime].join(' '))) )  {
         res.send({
           result: 2,
           msg: "예약 할 수 없는 시간입니다."
@@ -121,7 +122,7 @@ router.post('/reserve', (req, res) => {
       res.send({
         result: 0,
         data: booking.dateValues,
-        msg: "예약에 성공했습니다."
+        msg: "예약에 성공했습니다. 내 예약 보기 에서 확인 할 수 있습니다."
       })
     } catch(e) {
       res.send({
@@ -203,7 +204,8 @@ router.put('/changebooking', (req, res) => {
 
       let room = await db.room.findOne({ where: { roomNo: req.body.roomNo }})
 
-      if(req.body.startTime < room.openTime || req.body.endTime > room.closeTime || req.body.endTime <= req.body.startTime) {
+      if(req.body.startTime < room.openTime || req.body.endTime > room.closeTime || req.body.endTime <= req.body.startTime
+      || moment() > moment(new Date([req.body.date, req.body.startTime].join(' '))) ) {
         res.send({
           result: 2,
           msg: "예약 할 수 없는 시간입니다."

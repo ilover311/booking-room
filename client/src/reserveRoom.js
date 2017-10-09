@@ -56,7 +56,7 @@ class ReserveRoom extends React.Component {
       roomNo: row['roomNo'],
       roomName: row['roomName'],
       date: undefined,
-      booking_list: [],
+      bookings: [],
     })
   }
 
@@ -82,8 +82,11 @@ class ReserveRoom extends React.Component {
     .then(val => {
       this.setState({
         sb_open: true,
-        sb_msg: val.data.msg
+        sb_msg: val.data.msg,
+        roomNo: undefined,
+        date: undefined
       })
+
     })
     .catch(err => {
       console.error(err)
@@ -124,11 +127,11 @@ class ReserveRoom extends React.Component {
             selectRow={selectRow}
             options={options}
             >
-            <TableHeaderColumn dataField="roomNo" isKey={true}>No</TableHeaderColumn>
-            <TableHeaderColumn dataField="roomName" >회의실 이름</TableHeaderColumn>
-            <TableHeaderColumn dataField="capacity" >수용인원</TableHeaderColumn>
-            <TableHeaderColumn dataField="openTime" >개장시간</TableHeaderColumn>
-            <TableHeaderColumn dataField="closeTime" >폐장시간</TableHeaderColumn>
+            <TableHeaderColumn dataField="roomNo" isKey={true} dataSort>No</TableHeaderColumn>
+            <TableHeaderColumn dataField="roomName" dataSort>회의실 이름</TableHeaderColumn>
+            <TableHeaderColumn dataField="capacity" dataSort>수용인원</TableHeaderColumn>
+            <TableHeaderColumn dataField="openTime" dataSort>개장시간</TableHeaderColumn>
+            <TableHeaderColumn dataField="closeTime" dataSort>폐장시간</TableHeaderColumn>
           </BootstrapTable>
         </div>
         <div>

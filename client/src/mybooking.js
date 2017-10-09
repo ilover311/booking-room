@@ -135,11 +135,11 @@ class Mybookings extends React.Component{
             search
             selectRow={selectRow}
             options={options}>
-            <TableHeaderColumn dataField="bookingID" isKey={true}>예약 번호</TableHeaderColumn>
-            <TableHeaderColumn dataField="roomNo" >회의실 No</TableHeaderColumn>
-            <TableHeaderColumn dataField="date" >일자</TableHeaderColumn>
-            <TableHeaderColumn dataField="startTime" >시작시간</TableHeaderColumn>
-            <TableHeaderColumn dataField="endTime" >종료시간</TableHeaderColumn>
+            <TableHeaderColumn dataField="bookingID" isKey={true} dataSort>예약 번호</TableHeaderColumn>
+            <TableHeaderColumn dataField="roomNo" dataSort>회의실 No</TableHeaderColumn>
+            <TableHeaderColumn dataField="date" dataSort>일자</TableHeaderColumn>
+            <TableHeaderColumn dataField="startTime" dataSort>시작시간</TableHeaderColumn>
+            <TableHeaderColumn dataField="endTime" dataSort>종료시간</TableHeaderColumn>
             <TableHeaderColumn dataField="attendee" >참가자</TableHeaderColumn>
           </BootstrapTable>
         </div>

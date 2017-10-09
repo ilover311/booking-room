@@ -96,8 +96,9 @@ class App extends Component {
   render() {
     let title = '회의실 예약 SPA'
     if(matchPath(window.location.pathname, {path: '/login'})) { title += ' - 로그인'}
-    if(matchPath(window.location.pathname, {path: '/register'})) { title += ' - 회원가입'}
+    else if(matchPath(window.location.pathname, {path: '/register'})) { title += ' - 회원가입'}
     else if(matchPath(window.location.pathname, {path: '/reserve'})) { title += ' - 회의실 예약 하기'}
+    else if(matchPath(window.location.pathname, {path: '/mybooking'})) { title += ' - 내 예약 보기'}
 
     return (
       <BrowserRouter>
