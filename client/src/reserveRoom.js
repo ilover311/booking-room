@@ -118,7 +118,7 @@ class ReserveRoom extends React.Component {
     return (
       <div style={{margin: 50}}>
         <div className="Table" >
-          <span className="subTitle" style={{alignContent: 'center'}}>예약하고 싶은 회의실의 테이블을 클릭해주세요. 클릭 후 테이블 아래에서 예약을 진행 할 수 있습니다.</span>
+          <span className="subTitle" style={{alignContent: 'center'}}>예약하고 싶은 회의실의 테이블을 클릭해주세요. 클릭 후 테이블 아래에서 예약을 진행 할 수 있습니다. 개장 폐장 시간을 확인해주세요.</span>
           <BootstrapTable
             data={this.state.search_result}
             striped={true}
