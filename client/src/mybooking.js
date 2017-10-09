@@ -64,6 +64,7 @@ class Mybookings extends React.Component{
         startTime: startTime,
         endTime: endTime,
         roomNo: roomNo,
+        date: row.date,
         roomName: r.roomName,
         openTime: r.openTime,
         closeTime: r.closeTime,
@@ -78,6 +79,7 @@ class Mybookings extends React.Component{
   changeBooking() {
     axios.put('/api/changebooking', {
       bookingID: this.state.bookingID,
+      roomNo: this.state.roomNo,
       date: moment(this.state.date).format('YYYY-MM-DD'),
       startTime: moment(this.state.startTime).format('HH:mm:00'),
       endTime: moment(this.state.endTime).format('HH:mm:00'),
@@ -209,7 +211,7 @@ class Mybookings extends React.Component{
                             return (
                               <ListItem
                                 primaryText={val}
-                                key={val}
+                                key={val + idx}
                                 rightIcon={<DeteleForever/>}
                                 onClick={(ev) => {
                                   let a = this.state.attendee;

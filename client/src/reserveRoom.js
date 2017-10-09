@@ -209,7 +209,7 @@ class ReserveRoom extends React.Component {
                             return (
                               <ListItem
                                 primaryText={val}
-                                key={val}
+                                key={val+idx}
                                 rightIcon={<DeteleForever/>}
                                 onClick={(ev) => {
                                   let a = this.state.attendee;

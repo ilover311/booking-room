@@ -181,39 +181,67 @@ router.delete('/cancelbooking', (req, res) => {
 })
 
 router.put('/changebooking', (req, res) => {
-  db.booking.update({
-      startTime: req.body.startTime,
-      endTime: req.body.endTime,
-      attendee: req.body.attendee
-    }, {
-    where: {
-      bookingID: req.body.bookingID,
-      owner: req.user.username,
-      $or: {
-        date: { $gt: moment().format('YYYY-MM-DD') },
-        $and: {
-          date: moment().format('YYYY-MM-DD'),
-          startTime: { $gt: moment().format('HH:mm:00') }
-        }
+  (async function() {
+    try{
+      let overbooking = await db.booking.findAll({ where: {
+        roomNo: req.body.roomNo,
+        date: req.body.date,
+        startTime : { $lt: req.body.endTime },
+        endTime: { $gt: req.body.startTime },
+        bookingID: { $not: req.body.bookingID }
+      }});
+
+      console.log(overbooking)
+
+      if (overbooking.length > 0) {
+        res.send({
+          result: 1,
+          msg: "이미 원하시는 시간에 예약이 되어있습니다."
+        })
+        return ;
       }
+
+      let room = await db.room.findOne({ where: { roomNo: req.body.roomNo }})
+
+      if(req.body.startTime < room.openTime || req.body.endTime > room.closeTime || req.body.endTime <= req.body.startTime) {
+        res.send({
+          result: 2,
+          msg: "예약 할 수 없는 시간입니다."
+        })
+        return;
+      }
+
+      let changing = await db.booking.update({
+        startTime: req.body.startTime,
+        endTime: req.body.endTime,
+        attendee: req.body.attendee
+      }, {
+      where: {
+        bookingID: req.body.bookingID,
+        owner: req.user.username,
+        $or: {
+          date: { $gt: moment().format('YYYY-MM-DD') },
+          $and: {
+            date: moment().format('YYYY-MM-DD'),
+            startTime: { $gt: moment().format('HH:mm:00') }
+          }
+        }
+      }}) 
+
+
+      if (changing[0] === 1) {
+        msg = "예약이 성공적으로 변경되었습니다."
+      } else {
+        msg = "예약에 실패했습니다."
+      }
+
+      res.send({
+        result: 0,
+        msg: msg
+      })
+
+    } catch(e) {
+      console.log(e)
     }
-  })
-  .then(val => {
-    let msg;
-    if (val === 1) {
-      msg = "성공적으로 수정되었습니다."
-    } else {
-      msg = "수정할 수 없는 예약입니다. 시간을 확인해주세요."
-    }
-    res.send({
-      result: 0,
-      msg: msg
-    })
-  })  
-  .catch(err => {
-    res.send({
-      result: -1,
-      msg: msg
-    })
-  })
+  })();
 })
